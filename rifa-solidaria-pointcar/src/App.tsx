@@ -559,7 +559,7 @@ function LandingPage() {
                     </div>
                   </div>
                   <button
-                    onClick={() => handleReserve(1)}
+                    onClick={() => handleReserve(0)}
                     disabled={loading}
                     className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-5 px-10 rounded-xl transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 active:scale-95 text-xl flex items-center justify-center gap-2 disabled:opacity-70 disabled:transform-none"
                   >
