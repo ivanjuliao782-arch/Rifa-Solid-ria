@@ -125,7 +125,12 @@ function LandingPage() {
       });
 
       // 2. Definir quais números tentar reservar
-      if (count === 1 && firstNum && firstNum >= 1 && firstNum <= 2000) {
+      if (count === 1) {
+        if (!firstNum || firstNum < 1 || firstNum > 2000) {
+          alert('Por favor, digite um número válido de 1 a 2000 antes de reservar.');
+          setLoading(false);
+          return;
+        }
         if (takenSet.has(firstNum)) {
           alert('Este número já está reservado ou vendido. Escolha outro!');
           setLoading(false);
