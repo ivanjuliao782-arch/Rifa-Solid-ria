@@ -4,24 +4,24 @@
  */
 
 import { useState, useRef, ChangeEvent, useEffect } from 'react';
-import { 
-  BrowserRouter as Router, 
-  Routes, 
-  Route, 
-  Navigate 
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate
 } from 'react-router-dom';
-import { 
-  CheckCircle2, 
-  MessageCircle, 
-  Instagram, 
-  ChevronDown, 
-  ChevronUp, 
-  Info, 
-  ShieldCheck, 
-  HelpCircle, 
-  Upload, 
-  Loader2, 
-  Copy 
+import {
+  CheckCircle2,
+  MessageCircle,
+  Instagram,
+  ChevronDown,
+  ChevronUp,
+  Info,
+  ShieldCheck,
+  HelpCircle,
+  Upload,
+  Loader2,
+  Copy
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { supabase } from './lib/supabase';
@@ -38,7 +38,7 @@ function LandingPage() {
   const [loading, setLoading] = useState(false);
   const [reservedIds, setReservedIds] = useState<string[]>([]);
   const [soldCount, setSoldCount] = useState(0);
-  
+
   // Nome e telefone mantidos no estado para compatibilidade, mas removidos da UI por pedido do usuário
   const [nome, setNome] = useState('');
   const [telefone, setTelefone] = useState('');
@@ -53,7 +53,7 @@ function LandingPage() {
       .from('rifa_numeros')
       .select('*', { count: 'exact', head: true })
       .or('status.eq.pago,status.eq.aguardando_verificacao');
-    
+
     if (!error && count !== null) {
       setSoldCount(count);
     }
@@ -97,7 +97,7 @@ function LandingPage() {
           .from('rifa_numeros')
           .select('*', { count: 'exact', head: true })
           .eq('telefone', telefone.trim());
-        
+
         if (!phoneError && phoneCount !== null && phoneCount >= 20) {
           alert('Limite máximo de 20 números por participante atingido.');
           setLoading(false);
@@ -113,7 +113,7 @@ function LandingPage() {
         .from('rifa_numeros')
         .select('numero, status, created_at')
         .neq('status', 'livre');
-      
+
       const fiveMinutesAgo = Date.now() - 5 * 60 * 1000;
       const takenSet = new Set();
 
@@ -236,7 +236,7 @@ function LandingPage() {
 
       const { error: updateError } = await supabase
         .from('rifa_numeros')
-        .update({ 
+        .update({
           comprovante_url: publicUrl,
           status: 'aguardando_verificacao'
         })
@@ -263,7 +263,7 @@ function LandingPage() {
   const faqs = [
     {
       q: "Como sei que é confiável?",
-      a: "Somos a Oficina PointCar, empresa estabelecida e conhecida em Matias Barbosa. O sorteio será realizado com base na Loteria Federal, o que garante total transparência e impossibilidade de manipulação."
+      a: "Somos a Oficina PointCar, oficina estabelecida e conhecida em Matias Barbosa. O sorteio será realizado com base na Loteria Federal, o que garante total transparência e impossibilidade de manipulação."
     },
     {
       q: "Quando será o sorteio?",
@@ -290,9 +290,9 @@ function LandingPage() {
   return (
     <div className="min-h-screen bg-white selection:bg-blue-100 font-sans">
       {/* Floating WhatsApp Support */}
-      <a 
-        href="https://wa.me/553291096358" 
-        target="_blank" 
+      <a
+        href="https://wa.me/553291096358"
+        target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:bg-green-600 transition-all hover:scale-110 active:scale-95 flex items-center gap-2 group"
       >
@@ -304,16 +304,16 @@ function LandingPage() {
 
       {/* Container Principal - Max 900px */}
       <main className="max-w-[900px] mx-auto px-6 py-12 flex flex-col gap-24">
-        
+
         {/* HERO SECTION - IMAGEM DE FUNDO */}
         <section className="relative -mx-6 px-6 py-24 md:py-32 overflow-hidden rounded-b-[3rem] shadow-2xl flex flex-col items-center justify-center text-center min-h-[600px]">
           {/* Background Image */}
-          <div 
+          <div
             className="absolute inset-0 z-0"
-            style={{ 
-              backgroundImage: 'url("https://i.imgur.com/1LIxDCE.jpg")', 
-              backgroundSize: 'cover', 
-              backgroundPosition: 'center' 
+            style={{
+              backgroundImage: 'url("https://i.imgur.com/1LIxDCE.jpg")',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
             }}
           >
             {/* Dark Overlay for Readability */}
@@ -346,7 +346,7 @@ function LandingPage() {
             </p>
 
             <div className="flex flex-col gap-6 items-center">
-              <button 
+              <button
                 onClick={scrollToNumbers}
                 className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-6 px-12 rounded-2xl transition-all shadow-2xl hover:shadow-blue-500/30 transform hover:-translate-y-1 active:scale-95 text-2xl"
               >
@@ -360,7 +360,7 @@ function LandingPage() {
           </div>
         </section>
 
-        {/* O QUE VOCE PODE GANHAR */}
+        {/* O QUE VOCÊ PODE GANHAR */}
         <section className="flex flex-col gap-10">
           <div className="text-center flex flex-col gap-2">
             <h2 className="text-3xl font-bold text-gray-900">O Que Você Pode Ganhar</h2>
@@ -370,8 +370,8 @@ function LandingPage() {
           </div>
 
           <div className="w-full overflow-hidden rounded-2xl shadow-xl border border-gray-100">
-            <img 
-              src="https://i.imgur.com/jfSyjfY.jpeg" 
+            <img
+              src="https://i.imgur.com/jfSyjfY.jpeg"
               alt="Kits de Alta Performance Excel Automotive"
               className="w-full h-auto object-cover"
               referrerPolicy="no-referrer"
@@ -382,8 +382,8 @@ function LandingPage() {
             <h3 className="text-xl font-bold mb-6 text-gray-800 border-b pb-4">Conteúdo de cada Kit:</h3>
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700">
               {[
-                "2x Coolant / Água Desmineralizada",
-                "2x Coolant Vermelho (Aditivo)",
+                "2x Aditivo / Água Desmineralizada",
+                "2x Aditivo Vermelho (Radiador)",
                 "1x Excel Max 9839",
                 "1x Excel Max 989",
                 "1x Excel MAX 879",
@@ -411,12 +411,12 @@ function LandingPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[
                 {
-                  title: "1️⃣ Coolant / Água Desmineralizada",
+                  title: "1️⃣ Aditivo / Água Desmineralizada",
                   qty: "Quantidade: 2",
                   desc: "Utilizada no sistema de arrefecimento do motor, mistura com aditivo de radiador, evita depósitos minerais no sistema e protege radiador e bomba d’água."
                 },
                 {
-                  title: "2️⃣ Coolant Vermelho (Aditivo de Radiador)",
+                  title: "2️⃣ Aditivo Vermelho (Radiador)",
                   qty: "Quantidade: 2",
                   desc: "Controla a temperatura do motor, evita superaquecimento, protege contra corrosão interna e mantém o sistema de arrefecimento eficiente."
                 },
@@ -443,7 +443,7 @@ function LandingPage() {
                 {
                   title: "7️⃣ Limp Contato 981",
                   qty: "Quantidade: 1",
-                  desc: "Limpeza de componentes elétricos, remove oxidação e seira. Ideal para sensores e conectores."
+                  desc: "Limpeza de componentes elétricos, remove oxidação e sujeira. Ideal para sensores e conectores."
                 },
                 {
                   title: "8️⃣ Excel Lub 978",
@@ -485,7 +485,7 @@ function LandingPage() {
         <section id="escolha-seu-numero" className="flex flex-col gap-10 bg-blue-50 -mx-6 px-6 py-16 rounded-3xl border border-blue-100">
           <AnimatePresence mode="wait">
             {reservationState === 'idle' && (
-              <motion.div 
+              <motion.div
                 key="idle"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -495,26 +495,26 @@ function LandingPage() {
                 <div className="text-center flex flex-col gap-2">
                   <h2 className="text-3xl font-bold text-gray-900">Escolha Seu Número</h2>
                   <p className="text-xl font-bold text-blue-600">Cada número custa R$ 10</p>
-                  
+
                   {/* Pacotes - Estratégia de Venda */}
                   <div className="flex flex-wrap justify-center gap-2 mt-4">
-                    <button 
+                    <button
                       onClick={() => handleReserve(1)}
                       className="px-4 py-2 bg-white border border-blue-200 rounded-lg text-sm font-bold text-blue-700 hover:bg-blue-50 transition-all"
                     >
-                      1 Número<br/><span className="text-[10px] font-normal text-gray-500">R$ 10</span>
+                      1 Número<br /><span className="text-[10px] font-normal text-gray-500">R$ 10</span>
                     </button>
-                    <button 
+                    <button
                       onClick={() => handleReserve(3)}
                       className="px-4 py-2 bg-blue-50 border border-blue-200 rounded-lg text-sm font-bold text-blue-700 hover:bg-blue-100 transition-all font-mono"
                     >
-                      3 Números<br/><span className="text-[10px] font-normal text-blue-500">Mais chances de ganhar</span>
+                      3 Números<br /><span className="text-[10px] font-normal text-blue-500">Mais chances de ganhar</span>
                     </button>
-                    <button 
+                    <button
                       onClick={() => handleReserve(5)}
                       className="px-4 py-2 bg-blue-600 border border-blue-600 rounded-lg text-sm font-bold text-white hover:bg-blue-700 transition-all shadow-md"
                     >
-                      5 Números<br/><span className="text-[10px] font-normal text-blue-100">Pacote mais escolhido</span>
+                      5 Números<br /><span className="text-[10px] font-normal text-blue-100">Pacote mais escolhido</span>
                     </button>
                   </div>
 
@@ -535,10 +535,10 @@ function LandingPage() {
                   <div className="flex flex-col gap-4">
                     <div className="flex flex-col gap-2">
                       <label htmlFor="number-input" className="text-sm font-bold text-gray-700 ml-1">Digite o número desejado:</label>
-                      <input 
+                      <input
                         id="number-input"
-                        type="number" 
-                        min="1" 
+                        type="number"
+                        min="1"
                         max="2000"
                         placeholder="Digite seu número (1 a 2000)"
                         value={selectedNumbers[0] || ''}
@@ -553,7 +553,7 @@ function LandingPage() {
                       <p className="text-2xl font-black text-blue-900 font-mono tracking-tighter">{pixKey}</p>
                     </div>
                   </div>
-                  <button 
+                  <button
                     onClick={() => handleReserve(1)}
                     disabled={loading}
                     className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-5 px-10 rounded-xl transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 active:scale-95 text-xl flex items-center justify-center gap-2 disabled:opacity-70 disabled:transform-none"
@@ -561,7 +561,7 @@ function LandingPage() {
                     {loading ? <Loader2 className="animate-spin" /> : null}
                     RESERVAR NÚMERO
                   </button>
-                  
+
                   {/* Bloco de Informações do Original */}
                   <div className="bg-white p-6 rounded-xl border border-blue-100 shadow-sm flex flex-col gap-4">
                     <div className="flex gap-4 items-start">
@@ -570,10 +570,10 @@ function LandingPage() {
                         <strong>Instrução:</strong> Escolha um número disponível. Após a reserva, você terá acesso aos dados para pagamento e envio do comprovante.
                       </p>
                     </div>
-                    
+
                     <div className="pt-2 border-t border-gray-100">
                       <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                        <motion.div 
+                        <motion.div
                           initial={{ width: 0 }}
                           animate={{ width: `${(soldCount / 2000) * 100}%` }}
                           transition={{ duration: 2, ease: "easeOut" }}
@@ -587,7 +587,7 @@ function LandingPage() {
                       </div>
                     </div>
                   </div>
-                  
+
                   {/* Nota solicitada no final da seção */}
                   <p className="text-center font-bold text-gray-500 text-sm italic">
                     São apenas 2.000 números disponíveis.
@@ -597,7 +597,7 @@ function LandingPage() {
             )}
 
             {(reservationState === 'reserved' || reservationState === 'uploading') && (
-              <motion.div 
+              <motion.div
                 key="reserved"
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -625,14 +625,14 @@ function LandingPage() {
                       <code className="flex-1 bg-white p-3 rounded-lg border border-blue-200 text-blue-800 font-mono text-sm break-all">
                         {pixKey}
                       </code>
-                        <button 
-                          onClick={copyPix}
-                          className={`p-3 rounded-lg transition-all flex items-center gap-2 ${copied ? 'bg-green-600 text-white' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
-                          title="Copiar Chave"
-                        >
-                          {copied ? <CheckCircle2 size={20} /> : <Copy size={20} />}
-                          {copied && <span className="text-xs font-bold">Copiado!</span>}
-                        </button>
+                      <button
+                        onClick={copyPix}
+                        className={`p-3 rounded-lg transition-all flex items-center gap-2 ${copied ? 'bg-green-600 text-white' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+                        title="Copiar Chave"
+                      >
+                        {copied ? <CheckCircle2 size={20} /> : <Copy size={20} />}
+                        {copied && <span className="text-xs font-bold">Copiado!</span>}
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -643,16 +643,16 @@ function LandingPage() {
                     Enviar Comprovante
                   </h3>
                   <p className="text-sm text-gray-600">Após o pagamento, anexe o comprovante (Imagem ou PDF) abaixo:</p>
-                  
-                  <input 
-                    type="file" 
+
+                  <input
+                    type="file"
                     accept="image/*,.pdf"
                     className="hidden"
                     ref={fileInputRef}
                     onChange={handleFileUpload}
                   />
-                  
-                  <button 
+
+                  <button
                     onClick={() => fileInputRef.current?.click()}
                     disabled={reservationState === 'uploading'}
                     className="w-full border-2 border-dashed border-blue-300 hover:border-blue-500 bg-blue-50/50 p-8 rounded-xl flex flex-col items-center gap-3 transition-all group disabled:opacity-50"
@@ -672,7 +672,7 @@ function LandingPage() {
             )}
 
             {reservationState === 'success' && (
-              <motion.div 
+              <motion.div
                 key="success"
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -685,12 +685,12 @@ function LandingPage() {
                 <p className="text-gray-600 text-lg">
                   Seu comprovante foi enviado para análise. Em breve seus números <strong>{selectedNumbers.join(', ')}</strong> serão confirmados!
                 </p>
-                
+
                 {/* Botão de Compartilhamento Solicitado */}
                 <div className="flex flex-col gap-3 mt-4">
                   <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Compartilhe e nos ajude:</p>
-                  <a 
-                    href={`https://wa.me/?text=${encodeURIComponent("Acabei de participar da rifa para ajudar a levantar uma oficina. Escolhi meu número aqui: " + window.location.href)}`}
+                  <a
+                    href={`https://wa.me/?text=${encodeURIComponent(`Acabei de participar dessa rifa de R$10 para ajudar a levantar uma oficina 🔧\n\nQuem quiser participar também:\n${window.location.href}\n\nEscolha seu número e boa sorte 🍀`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="bg-green-100 text-green-700 px-8 py-4 rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-green-200 transition-all border border-green-200 shadow-sm"
@@ -700,7 +700,7 @@ function LandingPage() {
                   </a>
                 </div>
 
-                <button 
+                <button
                   onClick={() => {
                     setReservationState('idle');
                     setSelectedNumbers([]);
@@ -793,7 +793,7 @@ function LandingPage() {
           <div className="flex flex-col gap-4">
             {faqs.map((faq, idx) => (
               <div key={idx} className="border border-gray-100 rounded-xl overflow-hidden shadow-sm">
-                <button 
+                <button
                   onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
                   className="w-full p-6 text-left flex justify-between items-center bg-white hover:bg-gray-50 transition-colors"
                 >
@@ -802,7 +802,7 @@ function LandingPage() {
                 </button>
                 <AnimatePresence>
                   {openFaq === idx && (
-                    <motion.div 
+                    <motion.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
@@ -839,11 +839,11 @@ function LandingPage() {
 
           <div className="flex flex-col gap-6 items-center">
             <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Compartilhe essa causa:</p>
-            <a 
+            <a
               href={`https://wa.me/?text=${encodeURIComponent("Olá! Estou participando da Rifa Solidária da Oficina PointCar para ajudar na reconstrução após a enchente. Participe você também e concorra a prêmios! Veja aqui: " + window.location.href)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-green-100 text-green-700 px-8 py-4 rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-green-200 transition-all border border-green-200"
+              className="bg-green-100 text-green-700 px-8 py-4 rounded-2xl font-bold flex items-center gap-3 hover:bg-green-200 transition-all border border-green-200"
             >
               <MessageCircle size={24} />
               Compartilhar no WhatsApp
@@ -861,14 +861,15 @@ function LandingPage() {
           </div>
           <div className="text-[10px] text-gray-700 pb-8 uppercase tracking-[0.2em] font-medium flex flex-col items-center gap-1">
             <span>Automation Engine</span>
-            <a 
-              href="https://instagram.com/shockwave.ia" 
-              target="_blank" 
+            <span>Developed by Shockwave</span>
+            <a
+              href="https://instagram.com/shockwave.ia"
+              target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 hover:text-blue-600 transition-colors normal-case"
+              className="flex items-center gap-1 text-gray-700 hover:text-blue-600 transition-colors mt-1"
             >
-              <Instagram size={12} />
-              Developed by Shockwave (@shockwave.ia)
+              <Instagram size={14} />
+              <span>@shockwave.ia</span>
             </a>
           </div>
         </footer>
