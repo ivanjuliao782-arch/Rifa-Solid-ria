@@ -125,8 +125,8 @@ function LandingPage() {
       });
 
       // 2. Definir quais números tentar reservar
-      if (count === 1) {
-        if (!firstNum || firstNum < 1 || firstNum > 2000) {
+      if (count === 0) {
+        if (!firstNum || isNaN(firstNum) || firstNum < 1 || firstNum > 2000) {
           alert('Por favor, digite um número válido de 1 a 2000 antes de reservar.');
           setLoading(false);
           return;
@@ -158,7 +158,7 @@ function LandingPage() {
 
       for (const num of numbersToReserve) {
         // Buscar se já existe algum registro desse número (independente do status)
-        const { data: existing } = await supabase
+        const { data: existing, error: selectErr } = await supabase
           .from('rifa_numeros')
           .select('id')
           .eq('numero', num)
@@ -166,6 +166,8 @@ function LandingPage() {
           .maybeSingle();
 
         let res;
+        let queryError = selectErr;
+
         if (existing) {
           // Já existe? Atualiza o status e o timestamp (created_at)
           res = await supabase
@@ -192,9 +194,19 @@ function LandingPage() {
             .select();
         }
 
+        if (res.error) {
+          queryError = res.error;
+        }
+
         if (res.data && res.data.length > 0) {
           successfulIds.push(res.data[0].id);
           successfulNums.push(res.data[0].numero);
+        } else if (queryError) {
+          console.error("Supabase Error on Reserve:", queryError);
+          // throw the error to be caught by the catch block below
+          throw new Error(queryError.message || JSON.stringify(queryError));
+        } else if (!res.data || res.data.length === 0) {
+          throw new Error('Banco de dados retornou vazio ao reservar, possivelmente bloqueio de segurança.');
         }
       }
 
@@ -207,7 +219,7 @@ function LandingPage() {
       }
     } catch (error: any) {
       console.error('Erro na reserva:', error);
-      alert('Ocorreu um erro ao processar sua reserva. Tente novamente.');
+      alert('Ocorreu um erro ao processar sua reserva. Detalhes: ' + (error.message || JSON.stringify(error)));
     } finally {
       setLoading(false);
     }
