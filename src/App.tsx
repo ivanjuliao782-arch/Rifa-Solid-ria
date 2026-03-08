@@ -550,7 +550,7 @@ function LandingPage() {
 
         {/* ESCOLHA SEU NÚMERO / RESERVA */}
         <section id="escolha-seu-numero" className="flex flex-col gap-10 bg-blue-50 -mx-6 px-6 py-16 rounded-3xl border border-blue-100">
-          <AnimatePresence mode="wait">
+          <AnimatePresence initial={false}>
             {reservationState === 'idle' && (
               <motion.div
                 key="idle"
@@ -600,6 +600,33 @@ function LandingPage() {
 
                 <div className="max-w-md mx-auto w-full flex flex-col gap-6">
                   <div className="flex flex-col gap-4">
+                    {/* Campos Nome e WhatsApp para confirmação */}
+                    <div className="flex flex-col gap-3">
+                      <div className="flex flex-col gap-1">
+                        <label htmlFor="nome-input" className="text-sm font-bold text-gray-700 ml-1">Seu nome: <span className="text-gray-400 font-normal">(para confirmação)</span></label>
+                        <input
+                          id="nome-input"
+                          type="text"
+                          placeholder="Ex: João Silva"
+                          value={nome}
+                          onChange={(e) => setNome(e.target.value)}
+                          disabled={loading}
+                          className="w-full p-4 rounded-xl border-2 border-blue-200 focus:border-blue-500 focus:outline-none text-base transition-all bg-white shadow-sm disabled:opacity-50"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label htmlFor="tel-input" className="text-sm font-bold text-gray-700 ml-1">Seu WhatsApp: <span className="text-gray-400 font-normal">(para receber confirmação)</span></label>
+                        <input
+                          id="tel-input"
+                          type="tel"
+                          placeholder="Ex: 32 99999-0000"
+                          value={telefone}
+                          onChange={(e) => setTelefone(e.target.value)}
+                          disabled={loading}
+                          className="w-full p-4 rounded-xl border-2 border-blue-200 focus:border-blue-500 focus:outline-none text-base transition-all bg-white shadow-sm disabled:opacity-50"
+                        />
+                      </div>
+                    </div>
                     <div className="flex flex-col gap-2">
                       <label htmlFor="number-input" className="text-sm font-bold text-gray-700 ml-1">Digite o número desejado:</label>
                       <input
