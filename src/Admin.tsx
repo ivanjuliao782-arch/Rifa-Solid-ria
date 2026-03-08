@@ -242,7 +242,7 @@ export default function Admin() {
                       )}
                       {d.status === 'pago' && d.telefone && d.telefone !== 'N/A' && (
                         <a
-                          href={`https://web.whatsapp.com/send?phone=55${d.telefone.replace(/\D/g, '')}&text=${encodeURIComponent(`Olá ${d.nome || 'participante'}!\n\nSeu COMPROVANTE DE PAGAMENTO foi CONFIRMADO EM NOSSO SISTEMA ✅\n\nNúmero reservado: ${d.numero}\n\nBoa sorte no sorteio! 🍀\n\nCompartilhe com seus amigos:\nhttps://rifa-solid-ria-three.vercel.app/`)}&app_absent=1`}
+                          href={`https://web.whatsapp.com/send?phone=55${d.telefone.replace(/\D/g, '')}&text=${encodeURIComponent(`Olá ${d.nome || 'participante'}!\n\nSeu COMPROVANTE DE PAGAMENTO foi CONFIRMADO EM NOSSO SISTEMA 🍀\n\nNúmero reservado: ${d.numero}\n\nBoa sorte no sorteio! 🍀\n\nCompartilhe com seus amigos:\nhttps://rifa-solid-ria-three.vercel.app/`)}&app_absent=1`}
                           target="_self" rel="noopener noreferrer"
                           className="inline-flex items-center gap-1 bg-green-600 text-white font-bold text-xs px-3 py-2 rounded-lg"
                         >
@@ -311,7 +311,7 @@ export default function Admin() {
                         <div className="flex items-center justify-end gap-2">
                           {d.status === 'pago' && d.telefone && d.telefone !== 'N/A' && (
                             <a
-                              href={`https://web.whatsapp.com/send?phone=55${d.telefone.replace(/\D/g, '')}&text=${encodeURIComponent(`Olá ${d.nome || 'participante'}!\n\nSeu COMPROVANTE DE PAGAMENTO foi CONFIRMADO EM NOSSO SISTEMA ✅\n\nNúmero reservado: ${d.numero}\n\nBoa sorte no sorteio! 🍀\n\nCompartilhe com seus amigos:\nhttps://rifa-solid-ria-three.vercel.app/`)}&app_absent=1`}
+                              href={`https://web.whatsapp.com/send?phone=55${d.telefone.replace(/\D/g, '')}&text=${encodeURIComponent(`Olá ${d.nome || 'participante'}!\n\nSeu COMPROVANTE DE PAGAMENTO foi CONFIRMADO EM NOSSO SISTEMA 🍀\n\nNúmero reservado: ${d.numero}\n\nBoa sorte no sorteio! 🍀\n\nCompartilhe com seus amigos:\nhttps://rifa-solid-ria-three.vercel.app/`)}&app_absent=1`}
                               target="_self"
                               rel="noopener noreferrer"
                               className="p-2 bg-green-50 text-green-600 hover:bg-green-100 rounded-lg transition-all"
