@@ -172,38 +172,38 @@ export default function Admin() {
         </header>
 
         {/* Stats Grid */}
-        <div className="p-8 pb-0 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-sm font-bold text-gray-400 uppercase tracking-wider">Vendidos</span>
-              <div className="bg-green-100 p-2 rounded-lg text-green-600">
-                <CheckCircle2 size={24} />
+        <div className="px-3 pt-3 pb-0 md:px-8 md:pt-8 grid grid-cols-3 gap-2 md:gap-6">
+          <div className="bg-white p-2 md:p-6 rounded-xl md:rounded-2xl border border-gray-100 shadow-sm">
+            <div className="flex items-center justify-between mb-1 md:mb-4">
+              <span className="text-[9px] md:text-sm font-bold text-gray-400 uppercase tracking-wider">Vendidos</span>
+              <div className="bg-green-100 p-1 md:p-2 rounded-lg text-green-600">
+                <CheckCircle2 size={16} className="block md:hidden" /><CheckCircle2 size={24} className="hidden md:block" />
               </div>
             </div>
-            <p className="text-4xl font-black text-gray-900">{stats.vendidos}</p>
+            <p className="text-2xl md:text-4xl font-black text-gray-900">{stats.vendidos}</p>
           </div>
-          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-sm font-bold text-gray-400 uppercase tracking-wider">Reservados</span>
-              <div className="bg-amber-100 p-2 rounded-lg text-amber-600">
-                <Loader2 size={24} />
+          <div className="bg-white p-2 md:p-6 rounded-xl md:rounded-2xl border border-gray-100 shadow-sm">
+            <div className="flex items-center justify-between mb-1 md:mb-4">
+              <span className="text-[9px] md:text-sm font-bold text-gray-400 uppercase tracking-wider">Reservados</span>
+              <div className="bg-amber-100 p-1 md:p-2 rounded-lg text-amber-600">
+                <Loader2 size={16} className="block md:hidden" /><Loader2 size={24} className="hidden md:block" />
               </div>
             </div>
-            <p className="text-4xl font-black text-gray-900">{stats.reservados}</p>
+            <p className="text-2xl md:text-4xl font-black text-gray-900">{stats.reservados}</p>
           </div>
-          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-sm font-bold text-gray-400 uppercase tracking-wider">Livres</span>
-              <div className="bg-blue-100 p-2 rounded-lg text-blue-600">
-                <TableIcon size={24} />
+          <div className="bg-white p-2 md:p-6 rounded-xl md:rounded-2xl border border-gray-100 shadow-sm">
+            <div className="flex items-center justify-between mb-1 md:mb-4">
+              <span className="text-[9px] md:text-sm font-bold text-gray-400 uppercase tracking-wider">Livres</span>
+              <div className="bg-blue-100 p-1 md:p-2 rounded-lg text-blue-600">
+                <TableIcon size={16} className="block md:hidden" /><TableIcon size={24} className="hidden md:block" />
               </div>
             </div>
-            <p className="text-4xl font-black text-gray-900">{stats.livres}</p>
+            <p className="text-2xl md:text-4xl font-black text-gray-900">{stats.livres}</p>
           </div>
         </div>
 
         {/* Table Section */}
-        <div className="p-8 flex-1 flex flex-col overflow-hidden">
+        <div className="px-3 py-2 md:p-8 flex-1 flex flex-col overflow-hidden">
           <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col flex-1">
             <div className="p-4 border-b border-gray-200 bg-gray-50/50 flex items-center gap-4">
               <div className="relative flex-1">
