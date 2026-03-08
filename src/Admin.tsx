@@ -354,6 +354,7 @@ export default function Admin() {
             </div>
           </div>
         </div>
+      </div>
         <footer className="px-8 pb-6 text-center">
           <div className="text-[10px] text-gray-700 uppercase tracking-[0.2em] font-medium flex flex-col items-center gap-1">
             <span>Automation Engine</span>
