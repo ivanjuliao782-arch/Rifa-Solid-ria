@@ -353,7 +353,7 @@ function LandingPage() {
                   R$ 120.000.
                 </div>
                 <p className="text-lg md:text-xl text-gray-200 leading-relaxed font-medium max-w-2xl mx-auto">
-                  Foi isso que a enchente levou da nossa oficina em Matias Barbosa MG. Em poucas horas, anos de trabalho viraram lama.
+                  Foi isso que a enchente levou da nossa oficina. Em poucas horas, anos de trabalho viraram lama.
                 </p>
               </div>
             </div>
