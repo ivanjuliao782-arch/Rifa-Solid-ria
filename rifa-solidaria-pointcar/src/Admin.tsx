@@ -13,7 +13,8 @@ import {
   Search,
   RefreshCw,
   ExternalLink,
-  Instagram
+  Instagram,
+  MessageCircle
 } from 'lucide-react';
 
 interface RifaNumero {
@@ -261,6 +262,17 @@ export default function Admin() {
                       </td>
                       <td className="px-6 py-4 text-right">
                         <div className="flex items-center justify-end gap-2">
+                          {d.status === 'pago' && d.telefone && d.telefone !== 'N/A' && (
+                            <a
+                              href={`https://wa.me/55${d.telefone.replace(/\D/g, '')}?text=${encodeURIComponent(`Olá ${d.nome || 'participante'}!\n\nSeu COMPROVANTE DE PAGAMENTO foi CONFIRMADO EM NOSSO SISTEMA ✅\n\nNúmero reservado: ${d.numero}\n\nBoa sorte no sorteio! 🍀\n\nCompartilhe com seus amigos:\nhttps://rifa-solid-ria-three.vercel.app/`)}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-2 bg-green-50 text-green-600 hover:bg-green-100 rounded-lg transition-all"
+                              title="Enviar Confirmação WhatsApp"
+                            >
+                              <MessageCircle size={18} />
+                            </a>
+                          )}
                           {d.status !== 'pago' && d.status !== 'livre' && (
                             <button 
                               onClick={() => handleStatusChange(d.id, 'pago')}
