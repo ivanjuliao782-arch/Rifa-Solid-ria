@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useRef, ChangeEvent, useEffect } from 'react';
+import { useState, useRef, ChangeEvent, useEffect, Component, ReactNode } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -29,6 +29,38 @@ import { supabase } from './lib/supabase';
 // Pages
 import Login from './Login';
 import Admin from './Admin';
+
+// Error Boundary para evitar tela branca em caso de erro
+class ErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean; error: any }> {
+  constructor(props: { children: ReactNode }) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+  static getDerivedStateFromError(error: any) {
+    return { hasError: true, error };
+  }
+  componentDidCatch(error: any, errorInfo: any) {
+    console.error('ErrorBoundary capturou erro:', error, errorInfo);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ padding: 40, textAlign: 'center', fontFamily: 'sans-serif' }}>
+          <h2 style={{ color: '#dc2626' }}>Ops! Algo deu errado.</h2>
+          <p style={{ color: '#666', marginTop: 10 }}>Tente recarregar a página.</p>
+          <button
+            onClick={() => window.location.reload()}
+            style={{ marginTop: 20, padding: '12px 24px', background: '#2563eb', color: '#fff', border: 'none', borderRadius: 8, fontSize: 16, cursor: 'pointer' }}
+          >
+            Recarregar Página
+          </button>
+          <p style={{ color: '#999', fontSize: 12, marginTop: 16 }}>{String(this.state.error)}</p>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 function LandingPage() {
   const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
@@ -271,10 +303,28 @@ function LandingPage() {
     }
   };
 
-  const copyPix = () => {
-    navigator.clipboard.writeText(pixKey);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const copyPix = async () => {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(pixKey);
+      } else {
+        // Fallback para celulares antigos
+        const textArea = document.createElement('textarea');
+        textArea.value = pixKey;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-9999px';
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+      }
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Erro ao copiar:', err);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   const faqs = [
@@ -898,13 +948,15 @@ function LandingPage() {
 
 export default function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Router>
+    </ErrorBoundary>
   );
 }
