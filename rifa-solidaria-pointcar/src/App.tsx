@@ -500,7 +500,7 @@ function LandingPage() {
 
         {/* ESCOLHA SEU NÚMERO / RESERVA */}
         <section id="escolha-seu-numero" className="flex flex-col gap-10 bg-blue-50 -mx-6 px-6 py-16 rounded-3xl border border-blue-100">
-          <AnimatePresence mode="wait">
+          <AnimatePresence initial={false}>
             {reservationState === 'idle' && (
               <motion.div
                 key="idle"
