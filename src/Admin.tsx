@@ -220,6 +220,53 @@ export default function Admin() {
             </div>
 
             <div className="flex-1 overflow-auto">
+              {/* MOBILE CARD VIEW */}
+              <div className="md:hidden flex flex-col divide-y divide-gray-100">
+                {filteredData.map((d) => (
+                  <div key={d.id + '_card'} className="p-4 flex flex-col gap-2 bg-white">
+                    <div className="flex items-center justify-between">
+                      <span className="font-black text-gray-900 text-lg">#{d.numero}</span>
+                      <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter ${
+                        d.status === 'pago' ? 'bg-green-100 text-green-700' :
+                        d.status === 'aguardando_verificacao' ? 'bg-amber-100 text-amber-700' :
+                        d.status === 'reservado' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-500'
+                      }`}>{d.status.replace(/_/g, ' ')}</span>
+                    </div>
+                    <div className="text-sm text-gray-700"><span className="font-bold">Nome:</span> {d.nome || '-'}</div>
+                    <div className="text-sm text-gray-700"><span className="font-bold">WhatsApp:</span> {d.telefone || '-'}</div>
+                    <div className="flex flex-wrap gap-2 pt-1">
+                      {d.comprovante_url && (
+                        <a href={d.comprovante_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-blue-600 font-bold text-xs bg-blue-50 px-3 py-2 rounded-lg border border-blue-200">
+                          Ver Comprovante
+                        </a>
+                      )}
+                      {d.status === 'pago' && d.telefone && d.telefone !== 'N/A' && (
+                        <a
+                          href={`https://wa.me/55${d.telefone.replace(/\D/g, '')}?text=${encodeURIComponent(`Olá ${d.nome || 'participante'}!\n\nSeu COMPROVANTE DE PAGAMENTO foi CONFIRMADO EM NOSSO SISTEMA ✅\n\nNúmero reservado: ${d.numero}\n\nBoa sorte no sorteio! 🍀\n\nCompartilhe com seus amigos:\nhttps://rifa-solid-ria-three.vercel.app/`)}`}
+                          target="_blank" rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 bg-green-600 text-white font-bold text-xs px-3 py-2 rounded-lg"
+                        >
+                          💬 Enviar WhatsApp
+                        </a>
+                      )}
+                      {d.status !== 'pago' && d.status !== 'livre' && (
+                        <button onClick={() => handleStatusChange(d.id, 'pago')} className="inline-flex items-center gap-1 bg-green-50 text-green-700 font-bold text-xs px-3 py-2 rounded-lg border border-green-200">
+                          ✅ Aprovar
+                        </button>
+                      )}
+                      {d.status !== 'livre' && (
+                        <button onClick={() => handleStatusChange(d.id, 'livre', true)} className="inline-flex items-center gap-1 bg-red-50 text-red-600 font-bold text-xs px-3 py-2 rounded-lg border border-red-200">
+                          ❌ Cancelar
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                {filteredData.length === 0 && !loading && (
+                  <div className="p-8 text-center text-gray-400">Nenhum registro encontrado.</div>
+                )}
+              </div>
+              <div className="hidden md:block">
               <table className="w-full text-left">
                 <thead className="bg-gray-50 border-b border-gray-200 sticky top-0 z-10">
                   <tr>
