@@ -23,7 +23,6 @@ import {
   Loader2,
   Copy
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
 import { supabase } from './lib/supabase';
 
 // Pages
@@ -550,264 +549,123 @@ function LandingPage() {
 
         {/* ESCOLHA SEU NÚMERO / RESERVA */}
         <section id="escolha-seu-numero" className="flex flex-col gap-10 bg-blue-50 -mx-6 px-6 py-16 rounded-3xl border border-blue-100">
-          <AnimatePresence initial={false}>
-            {reservationState === 'idle' && (
-              <motion.div
-                key="idle"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="flex flex-col gap-10"
-              >
-                <div className="text-center flex flex-col gap-2">
-                  <h2 className="text-3xl font-bold text-gray-900">Escolha Seu Número</h2>
-                  <p className="text-xl font-bold text-blue-600">Cada número custa R$ 10</p>
-
-                  {/* Pacotes - Estratégia de Venda */}
-                  <div className="flex flex-wrap justify-center gap-2 mt-4">
-                    <button
-                      onClick={() => handleReserve(1)}
-                      className="px-4 py-2 bg-white border border-blue-200 rounded-lg text-sm font-bold text-blue-700 hover:bg-blue-50 transition-all"
-                    >
-                      1 Número<br /><span className="text-[10px] font-normal text-gray-500">R$ 10</span>
-                    </button>
-                    <button
-                      onClick={() => handleReserve(3)}
-                      className="px-4 py-2 bg-blue-50 border border-blue-200 rounded-lg text-sm font-bold text-blue-700 hover:bg-blue-100 transition-all font-mono"
-                    >
-                      3 Números<br /><span className="text-[10px] font-normal text-blue-500">Mais chances de ganhar</span>
-                    </button>
-                    <button
-                      onClick={() => handleReserve(5)}
-                      className="px-4 py-2 bg-blue-600 border border-blue-600 rounded-lg text-sm font-bold text-white hover:bg-blue-700 transition-all shadow-md"
-                    >
-                      5 Números<br /><span className="text-[10px] font-normal text-blue-100">Pacote mais escolhido</span>
-                    </button>
-                  </div>
-
-                  {/* Escassez Automática */}
-                  {soldCount >= 1600 && (
-                    <div className="mt-4 p-2 bg-red-100 text-red-700 text-xs font-bold rounded-lg animate-pulse">
-                      ÚLTIMOS NÚMEROS DISPONÍVEIS!
-                    </div>
-                  )}
-                  {soldCount >= 1000 && soldCount < 1600 && (
-                    <div className="mt-4 p-2 bg-orange-100 text-orange-700 text-xs font-bold rounded-lg">
-                      Metade dos números já foram reservados
-                    </div>
-                  )}
-                </div>
-
-                <div className="max-w-md mx-auto w-full flex flex-col gap-6">
-                  <div className="flex flex-col gap-4">
-                    {/* Campos Nome e WhatsApp para confirmação */}
-                    <div className="flex flex-col gap-3">
-                      <div className="flex flex-col gap-1">
-                        <label htmlFor="nome-input" className="text-sm font-bold text-gray-700 ml-1">Seu nome: <span className="text-gray-400 font-normal">(para confirmação)</span></label>
-                        <input
-                          id="nome-input"
-                          type="text"
-                          placeholder="Ex: João Silva"
-                          value={nome}
-                          onChange={(e) => setNome(e.target.value)}
-                          disabled={loading}
-                          className="w-full p-4 rounded-xl border-2 border-blue-200 focus:border-blue-500 focus:outline-none text-base transition-all bg-white shadow-sm disabled:opacity-50"
-                        />
-                      </div>
-                      <div className="flex flex-col gap-1">
-                        <label htmlFor="tel-input" className="text-sm font-bold text-gray-700 ml-1">Seu WhatsApp: <span className="text-gray-400 font-normal">(para receber confirmação)</span></label>
-                        <input
-                          id="tel-input"
-                          type="tel"
-                          placeholder="Ex: 32 99999-0000"
-                          value={telefone}
-                          onChange={(e) => setTelefone(e.target.value)}
-                          disabled={loading}
-                          className="w-full p-4 rounded-xl border-2 border-blue-200 focus:border-blue-500 focus:outline-none text-base transition-all bg-white shadow-sm disabled:opacity-50"
-                        />
-                      </div>
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <label htmlFor="number-input" className="text-sm font-bold text-gray-700 ml-1">Digite o número desejado:</label>
-                      <input
-                        id="number-input"
-                        type="number"
-                        min="1"
-                        max="2000"
-                        placeholder="Digite seu número (1 a 2000)"
-                        value={selectedNumbers[0] || ''}
-                        onChange={(e) => setSelectedNumbers([parseInt(e.target.value)])}
-                        disabled={loading}
-                        className="w-full p-5 rounded-xl border-2 border-blue-200 focus:border-blue-500 focus:outline-none text-lg transition-all bg-white shadow-sm disabled:opacity-50"
-                      />
-                    </div>
-                    {/* Chave Pix visível antes da reserva */}
-                    <div className="text-center p-3 bg-blue-100 rounded-xl border border-blue-200 shadow-sm">
-                      <p className="text-xs font-bold text-blue-800 uppercase tracking-widest mb-1">Chave Pix (Celular):</p>
-                      <p className="text-2xl font-black text-blue-900 font-mono tracking-tighter">{pixKey}</p>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => handleReserve(0)}
-                    disabled={loading}
-                    className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-5 px-10 rounded-xl transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 active:scale-95 text-xl flex items-center justify-center gap-2 disabled:opacity-70 disabled:transform-none"
-                  >
-                    {loading ? <Loader2 className="animate-spin" /> : null}
-                    RESERVAR NÚMERO
+          {reservationState === 'idle' && (
+            <div className="flex flex-col gap-10">
+              <div className="text-center flex flex-col gap-2">
+                <h2 className="text-3xl font-bold text-gray-900">Escolha Seu Número</h2>
+                <p className="text-xl font-bold text-blue-600">Cada número custa R$ 10</p>
+                <div className="flex flex-wrap justify-center gap-2 mt-4">
+                  <button onClick={() => handleReserve(1)} className="px-4 py-2 bg-white border border-blue-200 rounded-lg text-sm font-bold text-blue-700 hover:bg-blue-50 transition-all">
+                    1 Número<br /><span className="text-[10px] font-normal text-gray-500">R$ 10</span>
                   </button>
-
-                  {/* Bloco de Informações do Original */}
-                  <div className="bg-white p-6 rounded-xl border border-blue-100 shadow-sm flex flex-col gap-4">
-                    <div className="flex gap-4 items-start">
-                      <Info className="text-blue-500 shrink-0 mt-1" size={24} />
-                      <p className="text-sm text-gray-600 leading-relaxed">
-                        <strong>Instrução:</strong> Escolha um número disponível. Após a reserva, você terá acesso aos dados para pagamento e envio do comprovante.
-                      </p>
-                    </div>
-
-                    <div className="pt-2 border-t border-gray-100">
-                      <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          animate={{ width: `${(soldCount / 2000) * 100}%` }}
-                          transition={{ duration: 2, ease: "easeOut" }}
-                          className="bg-blue-600 h-full"
-                        />
-                      </div>
-                      <div className="flex justify-between text-[10px] text-gray-400 uppercase tracking-widest font-bold mt-2">
-                        <span>Início</span>
-                        <span>Números vendidos: {soldCount} / 2000</span>
-                        <span>{((soldCount / 2000) * 100).toFixed(1)}%</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Nota solicitada no final da seção */}
-                  <p className="text-center font-bold text-gray-500 text-sm italic">
-                    São apenas 2.000 números disponíveis.
-                  </p>
+                  <button onClick={() => handleReserve(3)} className="px-4 py-2 bg-blue-50 border border-blue-200 rounded-lg text-sm font-bold text-blue-700 hover:bg-blue-100 transition-all">
+                    3 Números<br /><span className="text-[10px] font-normal text-blue-500">Mais chances de ganhar</span>
+                  </button>
+                  <button onClick={() => handleReserve(5)} className="px-4 py-2 bg-blue-600 border border-blue-600 rounded-lg text-sm font-bold text-white hover:bg-blue-700 transition-all shadow-md">
+                    5 Números<br /><span className="text-[10px] font-normal text-blue-100">Pacote mais escolhido</span>
+                  </button>
                 </div>
-              </motion.div>
-            )}
-
-            {(reservationState === 'reserved' || reservationState === 'uploading') && (
-              <motion.div
-                key="reserved"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="flex flex-col gap-8 max-w-lg mx-auto w-full bg-white p-8 rounded-3xl shadow-xl border border-blue-100"
-              >
-                <div className="text-center flex flex-col gap-3">
-                  <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-2">
-                    <CheckCircle2 size={32} />
-                  </div>
-                  <h2 className="text-2xl font-bold text-gray-900">
-                    {selectedNumbers.length > 1 ? `${selectedNumbers.length} Números Reservados!` : `Número ${selectedNumbers[0]} Reservado!`}
-                  </h2>
-                  <p className="text-gray-600">Agora realize o pagamento para confirmar sua participação.</p>
-                  <p className="text-sm font-bold text-blue-600">Seus números: {selectedNumbers.join(', ')}</p>
-                </div>
-
-                <div className="bg-blue-50 p-6 rounded-2xl border border-blue-100 flex flex-col gap-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-bold text-gray-500 uppercase tracking-wider">Valor Total</span>
-                    <span className="text-2xl font-bold text-blue-600">R$ {selectedNumbers.length * 10},00</span>
+                {soldCount >= 1600 && <div className="mt-4 p-2 bg-red-100 text-red-700 text-xs font-bold rounded-lg animate-pulse">ÚLTIMOS NÚMEROS DISPONÍVEIS!</div>}
+                {soldCount >= 1000 && soldCount < 1600 && <div className="mt-4 p-2 bg-orange-100 text-orange-700 text-xs font-bold rounded-lg">Metade dos números já foram reservados</div>}
+              </div>
+              <div className="max-w-md mx-auto w-full flex flex-col gap-6">
+                <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-1">
+                      <label htmlFor="nome-input" className="text-sm font-bold text-gray-700 ml-1">Seu nome: <span className="text-gray-400 font-normal">(para confirmação)</span></label>
+                      <input id="nome-input" type="text" placeholder="Ex: João Silva" value={nome} onChange={(e) => setNome(e.target.value)} disabled={loading} className="w-full p-4 rounded-xl border-2 border-blue-200 focus:border-blue-500 focus:outline-none text-base transition-all bg-white shadow-sm disabled:opacity-50" />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label htmlFor="tel-input" className="text-sm font-bold text-gray-700 ml-1">Seu WhatsApp: <span className="text-gray-400 font-normal">(para receber confirmação)</span></label>
+                      <input id="tel-input" type="tel" placeholder="Ex: 32 99999-0000" value={telefone} onChange={(e) => setTelefone(e.target.value)} disabled={loading} className="w-full p-4 rounded-xl border-2 border-blue-200 focus:border-blue-500 focus:outline-none text-base transition-all bg-white shadow-sm disabled:opacity-50" />
+                    </div>
                   </div>
                   <div className="flex flex-col gap-2">
-                    <span className="text-sm font-bold text-gray-500 uppercase tracking-wider">Chave PIX (Celular)</span>
-                    <div className="flex gap-2">
-                      <code className="flex-1 bg-white p-3 rounded-lg border border-blue-200 text-blue-800 font-mono text-sm break-all">
-                        {pixKey}
-                      </code>
-                      <button
-                        onClick={copyPix}
-                        className={`p-3 rounded-lg transition-all flex items-center gap-2 ${copied ? 'bg-green-600 text-white' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
-                        title="Copiar Chave"
-                      >
-                        {copied ? <CheckCircle2 size={20} /> : <Copy size={20} />}
-                        {copied && <span className="text-xs font-bold">Copiado!</span>}
-                      </button>
+                    <label htmlFor="number-input" className="text-sm font-bold text-gray-700 ml-1">Digite o número desejado:</label>
+                    <input id="number-input" type="number" min="1" max="2000" placeholder="Digite seu número (1 a 2000)" value={selectedNumbers[0] || ''} onChange={(e) => setSelectedNumbers([parseInt(e.target.value)])} disabled={loading} className="w-full p-5 rounded-xl border-2 border-blue-200 focus:border-blue-500 focus:outline-none text-lg transition-all bg-white shadow-sm disabled:opacity-50" />
+                  </div>
+                  <div className="text-center p-3 bg-blue-100 rounded-xl border border-blue-200 shadow-sm">
+                    <p className="text-xs font-bold text-blue-800 uppercase tracking-widest mb-1">Chave Pix (Celular):</p>
+                    <p className="text-2xl font-black text-blue-900 font-mono tracking-tighter">{pixKey}</p>
+                  </div>
+                </div>
+                <button onClick={() => handleReserve(0)} disabled={loading} className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-5 px-10 rounded-xl transition-all shadow-lg text-xl flex items-center justify-center gap-2 disabled:opacity-70">
+                  {loading ? <Loader2 className="animate-spin" /> : null}
+                  RESERVAR NÚMERO
+                </button>
+                <div className="bg-white p-6 rounded-xl border border-blue-100 shadow-sm flex flex-col gap-4">
+                  <div className="flex gap-4 items-start">
+                    <Info className="text-blue-500 shrink-0 mt-1" size={24} />
+                    <p className="text-sm text-gray-600 leading-relaxed"><strong>Instrução:</strong> Escolha um número disponível. Após a reserva, você terá acesso aos dados para pagamento e envio do comprovante.</p>
+                  </div>
+                  <div className="pt-2 border-t border-gray-100">
+                    <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                      <div className="bg-blue-600 h-full transition-all duration-1000" style={{ width: `${(soldCount / 2000) * 100}%` }} />
+                    </div>
+                    <div className="flex justify-between text-[10px] text-gray-400 uppercase tracking-widest font-bold mt-2">
+                      <span>Início</span>
+                      <span>Números vendidos: {soldCount} / 2000</span>
+                      <span>{((soldCount / 2000) * 100).toFixed(1)}%</span>
                     </div>
                   </div>
                 </div>
-
-                <div className="flex flex-col gap-4">
-                  <h3 className="font-bold text-gray-800 flex items-center gap-2">
-                    <Upload size={20} className="text-blue-500" />
-                    Enviar Comprovante
-                  </h3>
-                  <p className="text-sm text-gray-600">Após o pagamento, anexe o comprovante (Imagem ou PDF) abaixo:</p>
-
-                  <input
-                    type="file"
-                    accept="image/*,.pdf"
-                    className="hidden"
-                    ref={fileInputRef}
-                    onChange={handleFileUpload}
-                  />
-
-                  <button
-                    onClick={() => fileInputRef.current?.click()}
-                    disabled={reservationState === 'uploading'}
-                    className="w-full border-2 border-dashed border-blue-300 hover:border-blue-500 bg-blue-50/50 p-8 rounded-xl flex flex-col items-center gap-3 transition-all group disabled:opacity-50"
-                  >
-                    {reservationState === 'uploading' ? (
-                      <Loader2 className="animate-spin text-blue-600" size={32} />
-                    ) : (
-                      <Upload className="text-blue-400 group-hover:text-blue-600 transition-colors" size={32} />
-                    )}
-                    <span className="font-bold text-blue-600">
-                      {reservationState === 'uploading' ? 'Enviando...' : 'Clique para selecionar arquivo'}
-                    </span>
-                    <span className="text-xs text-gray-400">PNG, JPG ou PDF (Máx 5MB)</span>
-                  </button>
+                <p className="text-center font-bold text-gray-500 text-sm italic">São apenas 2.000 números disponíveis.</p>
+              </div>
+            </div>
+          )}
+          {(reservationState === 'reserved' || reservationState === 'uploading') && (
+            <div className="flex flex-col gap-8 max-w-lg mx-auto w-full bg-white p-8 rounded-3xl shadow-xl border border-blue-100">
+              <div className="text-center flex flex-col gap-3">
+                <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-2"><CheckCircle2 size={32} /></div>
+                <h2 className="text-2xl font-bold text-gray-900">{selectedNumbers.length > 1 ? `${selectedNumbers.length} Números Reservados!` : `Número ${selectedNumbers[0]} Reservado!`}</h2>
+                <p className="text-gray-600">Agora realize o pagamento para confirmar sua participação.</p>
+                <p className="text-sm font-bold text-blue-600">Seus números: {selectedNumbers.join(', ')}</p>
+              </div>
+              <div className="bg-blue-50 p-6 rounded-2xl border border-blue-100 flex flex-col gap-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-bold text-gray-500 uppercase tracking-wider">Valor Total</span>
+                  <span className="text-2xl font-bold text-blue-600">R$ {selectedNumbers.length * 10},00</span>
                 </div>
-              </motion.div>
-            )}
-
-            {reservationState === 'success' && (
-              <motion.div
-                key="success"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="flex flex-col gap-6 text-center max-w-lg mx-auto w-full bg-white p-10 rounded-3xl shadow-xl border border-green-100"
-              >
-                <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <CheckCircle2 size={48} />
+                <div className="flex flex-col gap-2">
+                  <span className="text-sm font-bold text-gray-500 uppercase tracking-wider">Chave PIX (Celular)</span>
+                  <div className="flex gap-2">
+                    <code className="flex-1 bg-white p-3 rounded-lg border border-blue-200 text-blue-800 font-mono text-sm break-all">{pixKey}</code>
+                    <button onClick={copyPix} className={`p-3 rounded-lg transition-all flex items-center gap-2 ${copied ? 'bg-green-600 text-white' : 'bg-blue-600 text-white hover:bg-blue-700'}`} title="Copiar Chave">
+                      {copied ? <CheckCircle2 size={20} /> : <Copy size={20} />}
+                      {copied && <span className="text-xs font-bold">Copiado!</span>}
+                    </button>
+                  </div>
                 </div>
-                <h2 className="text-3xl font-bold text-gray-900">Sucesso!</h2>
-                <p className="text-gray-600 text-lg">
-                  Seu comprovante foi enviado para análise. Em breve seus números <strong>{selectedNumbers.join(', ')}</strong> serão confirmados!
-                </p>
-
-                {/* Botão de Compartilhamento Solicitado */}
-                <div className="flex flex-col gap-3 mt-4">
-                  <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Compartilhe e nos ajude:</p>
-                  <a
-                    href={`https://wa.me/?text=${encodeURIComponent(`Acabei de participar dessa rifa de R$10 para ajudar a levantar uma oficina 🔧\n\nQuem quiser participar também:\n${window.location.href}\n\nEscolha seu número e boa sorte 🍀`)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-green-100 text-green-700 px-8 py-4 rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-green-200 transition-all border border-green-200 shadow-sm"
-                  >
-                    <MessageCircle size={24} />
-                    Compartilhar no WhatsApp
-                  </a>
-                </div>
-
-                <button
-                  onClick={() => {
-                    setReservationState('idle');
-                    setSelectedNumbers([]);
-                    setNome('');
-                    setTelefone('');
-                  }}
-                  className="mt-4 text-blue-600 font-bold hover:underline"
-                >
-                  Reservar outro número
+              </div>
+              <div className="flex flex-col gap-4">
+                <h3 className="font-bold text-gray-800 flex items-center gap-2"><Upload size={20} className="text-blue-500" />Enviar Comprovante</h3>
+                <p className="text-sm text-gray-600">Após o pagamento, anexe o comprovante (Imagem ou PDF) abaixo:</p>
+                <input type="file" accept="image/*,.pdf" className="hidden" ref={fileInputRef} onChange={handleFileUpload} />
+                <button onClick={() => fileInputRef.current?.click()} disabled={reservationState === 'uploading'} className="w-full border-2 border-dashed border-blue-300 hover:border-blue-500 bg-blue-50/50 p-8 rounded-xl flex flex-col items-center gap-3 transition-all group disabled:opacity-50">
+                  {reservationState === 'uploading' ? <Loader2 className="animate-spin text-blue-600" size={32} /> : <Upload className="text-blue-400 group-hover:text-blue-600 transition-colors" size={32} />}
+                  <span className="font-bold text-blue-600">{reservationState === 'uploading' ? 'Enviando...' : 'Clique para selecionar arquivo'}</span>
+                  <span className="text-xs text-gray-400">PNG, JPG ou PDF (Máx 5MB)</span>
                 </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
+              </div>
+            </div>
+          )}
+          {reservationState === 'success' && (
+            <div className="flex flex-col gap-6 text-center max-w-lg mx-auto w-full bg-white p-10 rounded-3xl shadow-xl border border-green-100">
+              <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-2"><CheckCircle2 size={48} /></div>
+              <h2 className="text-3xl font-bold text-gray-900">Sucesso!</h2>
+              <p className="text-gray-600 text-lg">Seu comprovante foi enviado para análise. Em breve seus números <strong>{selectedNumbers.join(', ')}</strong> serão confirmados!</p>
+              <div className="flex flex-col gap-3 mt-4">
+                <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Compartilhe e nos ajude:</p>
+                <a href={`https://wa.me/?text=${encodeURIComponent(`Acabei de participar dessa rifa de R$10 para ajudar a levantar uma oficina 🔧\n\nQuem quiser participar também:\n${window.location.href}\n\nEscolha seu número e boa sorte 🍀`)}`} target="_blank" rel="noopener noreferrer" className="bg-green-100 text-green-700 px-8 py-4 rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-green-200 transition-all border border-green-200 shadow-sm">
+                  <MessageCircle size={24} />
+                  Compartilhar no WhatsApp
+                </a>
+              </div>
+              <button onClick={() => { setReservationState('idle'); setSelectedNumbers([]); setNome(''); setTelefone(''); }} className="mt-4 text-blue-600 font-bold hover:underline">
+                Reservar outro número
+              </button>
+            </div>
+          )}
         </section>
 
         {/* COMO FUNCIONA */}
@@ -894,20 +752,9 @@ function LandingPage() {
                   <span className="font-bold text-gray-800">{faq.q}</span>
                   {openFaq === idx ? <ChevronUp className="text-gray-400" /> : <ChevronDown className="text-gray-400" />}
                 </button>
-                <AnimatePresence>
-                  {openFaq === idx && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="p-6 pt-0 text-gray-600 leading-relaxed bg-gray-50/50">
-                        {faq.a}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {openFaq === idx && (
+                  <div className="overflow-hidden"><div className="p-6 pt-0 text-gray-600 leading-relaxed bg-gray-50/50">{faq.a}</div></div>
+                )}
               </div>
             ))}
           </div>
