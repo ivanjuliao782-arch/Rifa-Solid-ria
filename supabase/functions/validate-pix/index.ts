@@ -39,7 +39,7 @@ serve(async (req) => {
     // Usamos o Gemini pois ele é muito mais preciso para ler comprovantes reais (borrados/fotos)
     const prompt = `Analise este comprovante de PIX. Verifique se:
     1. O texto contém a palavra "PIX".
-    2. O destino ou chave PIX é "32 9109-6358".
+    2. O destino ou chave PIX é "32 99109-6358".
     Responda APENAS "VALIDO" ou "INVALIDO".`
 
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {

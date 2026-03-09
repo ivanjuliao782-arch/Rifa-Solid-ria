@@ -75,7 +75,7 @@ function LandingPage() {
   const [telefone, setTelefone] = useState('');
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const pixKey = "32 9109-6358";
+  const pixKey = "32 99109-6358";
 
   // Buscar contador de números vendidos/reservados
   const fetchStats = async () => {
@@ -357,7 +357,7 @@ function LandingPage() {
     <div className="min-h-screen bg-white selection:bg-blue-100 font-sans">
       {/* Floating WhatsApp Support */}
       <a
-        href="https://wa.me/553291096358"
+        href="https://wa.me/5532991096358"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:bg-green-600 transition-all hover:scale-110 active:scale-95 flex items-center gap-2 group"
@@ -768,9 +768,9 @@ function LandingPage() {
           </div>
 
           <div className="flex flex-col md:flex-row gap-8 justify-center items-center">
-            <a href="https://wa.me/553291096358" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-green-600 font-bold hover:underline">
+            <a href="https://wa.me/5532991096358" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-green-600 font-bold hover:underline">
               <MessageCircle size={24} />
-              32 9109-6358 (João)
+              32 99109-6358 (João)
             </a>
             <a href="https://wa.me/553299913864" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-green-600 font-bold hover:underline">
               <MessageCircle size={24} />
