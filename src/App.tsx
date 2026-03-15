@@ -68,7 +68,7 @@ function LandingPage() {
   const [reservationState, setReservationState] = useState<'idle' | 'reserved' | 'uploading' | 'success'>('idle');
   const [loading, setLoading] = useState(false);
   const [reservedIds, setReservedIds] = useState<string[]>([]);
-  const [soldCount, setSoldCount] = useState(0);
+  const [availableCount, setAvailableCount] = useState(0);
 
   // Nome e telefone mantidos no estado para compatibilidade, mas removidos da UI por pedido do usuário
   const [nome, setNome] = useState('');
@@ -77,16 +77,16 @@ function LandingPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const pixKey = "32 99109-6358";
 
-  // Buscar contador de números vendidos/reservados
+  // Buscar contador de números disponíveis
   const fetchStats = async () => {
     if (!supabase) return;
     const { count, error } = await supabase
       .from('rifa_numeros')
       .select('*', { count: 'exact', head: true })
-      .or('status.eq.pago,status.eq.aguardando_verificacao');
+      .eq('status', 'livre');
 
     if (!error && count !== null) {
-      setSoldCount(count);
+      setAvailableCount(count);
     }
   };
 
@@ -139,11 +139,13 @@ function LandingPage() {
       let numbersToReserve: number[] = [];
       const firstNum = selectedNumbers[0];
 
-      // 1. Pegar números que estão no banco e filtrar disponibilidade no JS
-      const { data: allNotLivre } = await supabase
-        .from('rifa_numeros')
-        .select('numero, status, created_at')
-        .neq('status', 'livre');
+      // 1. Pegar números que estão no banco e filtrar disponibilidade no JS (Paginação em 2 Blocos para limite de 1000)
+      const [resNotLivre1, resNotLivre2] = await Promise.all([
+        supabase.from('rifa_numeros').select('numero, status, created_at').neq('status', 'livre').range(0, 999),
+        supabase.from('rifa_numeros').select('numero, status, created_at').neq('status', 'livre').range(1000, 1999)
+      ]);
+
+      const allNotLivre = [...(resNotLivre1.data || []), ...(resNotLivre2.data || [])];
 
       const fiveMinutesAgo = Date.now() - 5 * 60 * 1000;
       const takenSet = new Set();
@@ -355,16 +357,16 @@ function LandingPage() {
 
   return (
     <div className="min-h-screen bg-white selection:bg-blue-100 font-sans">
-      {/* Floating WhatsApp Support */}
+      {/* Floating WhatsApp Share */}
       <a
-        href="https://wa.me/5532991096358"
+        href={`https://wa.me/?text=${encodeURIComponent("Olá! Estou ajudando na Rifa Solidária da Oficina PointCar para reconstrução após a enchente. 🔧\n\nParticipe você também e concorra a kits de alta performance! 🍀\n\nVeja como participar: " + window.location.href)}`}
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:bg-green-600 transition-all hover:scale-110 active:scale-95 flex items-center gap-2 group"
       >
         <MessageCircle size={28} />
         <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 ease-in-out whitespace-nowrap font-bold">
-          Suporte WhatsApp
+          Compartilhe essa causa
         </span>
       </a>
 
@@ -565,8 +567,8 @@ function LandingPage() {
                     5 Números<br /><span className="text-[10px] font-normal text-blue-100">Pacote mais escolhido</span>
                   </button>
                 </div>
-                {soldCount >= 1600 && <div className="mt-4 p-2 bg-red-100 text-red-700 text-xs font-bold rounded-lg animate-pulse">ÚLTIMOS NÚMEROS DISPONÍVEIS!</div>}
-                {soldCount >= 1000 && soldCount < 1600 && <div className="mt-4 p-2 bg-orange-100 text-orange-700 text-xs font-bold rounded-lg">Metade dos números já foram reservados</div>}
+                {availableCount <= 400 && <div className="mt-4 p-2 bg-red-100 text-red-700 text-xs font-bold rounded-lg animate-pulse">ÚLTIMOS NÚMEROS DISPONÍVEIS!</div>}
+                {availableCount <= 1000 && availableCount > 400 && <div className="mt-4 p-2 bg-orange-100 text-orange-700 text-xs font-bold rounded-lg">Metade dos números já foram reservados</div>}
               </div>
               <div className="max-w-md mx-auto w-full flex flex-col gap-6">
                 <div className="flex flex-col gap-4">
@@ -600,12 +602,12 @@ function LandingPage() {
                   </div>
                   <div className="pt-2 border-t border-gray-100">
                     <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                      <div className="bg-blue-600 h-full transition-all duration-1000" style={{ width: `${(soldCount / 2000) * 100}%` }} />
+                      <div className="bg-blue-600 h-full transition-all duration-1000" style={{ width: `${(Math.max(98, 2000 - availableCount) / 2000) * 100}%` }} />
                     </div>
                     <div className="flex justify-between text-[10px] text-gray-400 uppercase tracking-widest font-bold mt-2">
                       <span>Início</span>
-                      <span>Números vendidos: {soldCount} / 2000</span>
-                      <span>{((soldCount / 2000) * 100).toFixed(1)}%</span>
+                      <span>{Math.max(98, 2000 - availableCount)} NÚMEROS VENDIDOS</span>
+                      <span>{((Math.max(98, 2000 - availableCount) / 2000) * 100).toFixed(1)}%</span>
                     </div>
                   </div>
                 </div>
@@ -771,10 +773,6 @@ function LandingPage() {
             <a href="https://wa.me/5532991096358" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-green-600 font-bold hover:underline">
               <MessageCircle size={24} />
               32 99109-6358 (João)
-            </a>
-            <a href="https://wa.me/553299913864" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-green-600 font-bold hover:underline">
-              <MessageCircle size={24} />
-              32 9991-3864 (Saulo)
             </a>
           </div>
 
