@@ -602,12 +602,12 @@ function LandingPage() {
                   </div>
                   <div className="pt-2 border-t border-gray-100">
                     <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                      <div className="bg-blue-600 h-full transition-all duration-1000" style={{ width: `${(Math.max(98, 2000 - availableCount) / 2000) * 100}%` }} />
+                      <div className="bg-blue-600 h-full transition-all duration-1000" style={{ width: `${(Math.max(400, 2000 - availableCount) / 2000) * 100}%` }} />
                     </div>
                     <div className="flex justify-between text-[10px] text-gray-400 uppercase tracking-widest font-bold mt-2">
                       <span>Início</span>
-                      <span>{Math.max(98, 2000 - availableCount)} NÚMEROS VENDIDOS</span>
-                      <span>{((Math.max(98, 2000 - availableCount) / 2000) * 100).toFixed(1)}%</span>
+                      <span>{Math.max(400, 2000 - availableCount)} NÚMEROS VENDIDOS</span>
+                      <span>{((Math.max(400, 2000 - availableCount) / 2000) * 100).toFixed(1)}%</span>
                     </div>
                   </div>
                 </div>

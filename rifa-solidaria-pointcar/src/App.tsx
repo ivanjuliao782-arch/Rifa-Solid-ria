@@ -44,7 +44,7 @@ function LandingPage() {
   const [telefone, setTelefone] = useState('');
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const pixKey = "32 9109-6358";
+  const pixKey = "32 99109-6358";
 
   // Buscar contador de números vendidos/reservados
   const fetchStats = async () => {
@@ -306,16 +306,16 @@ function LandingPage() {
 
   return (
     <div className="min-h-screen bg-white selection:bg-blue-100 font-sans">
-      {/* Floating WhatsApp Support */}
+      {/* Floating WhatsApp Share */}
       <a
-        href="https://wa.me/553291096358"
+        href={`https://wa.me/?text=${encodeURIComponent("Olá! Estou ajudando na Rifa Solidária da Oficina PointCar para reconstrução após a enchente. 🔧\n\nParticipe você também e concorra a kits de alta performance! 🍀\n\nVeja como participar: " + window.location.href)}`}
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:bg-green-600 transition-all hover:scale-110 active:scale-95 flex items-center gap-2 group"
       >
         <MessageCircle size={28} />
         <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 ease-in-out whitespace-nowrap font-bold">
-          Suporte WhatsApp
+          Compartilhe essa causa
         </span>
       </a>
 
@@ -620,15 +620,15 @@ function LandingPage() {
                       <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
                         <motion.div
                           initial={{ width: 0 }}
-                          animate={{ width: `${(soldCount / 2000) * 100}%` }}
+                          animate={{ width: `${(Math.max(400, soldCount) / 2000) * 100}%` }}
                           transition={{ duration: 2, ease: "easeOut" }}
                           className="bg-blue-600 h-full"
                         />
                       </div>
                       <div className="flex justify-between text-[10px] text-gray-400 uppercase tracking-widest font-bold mt-2">
                         <span>Início</span>
-                        <span>Números vendidos: {soldCount} / 2000</span>
-                        <span>{((soldCount / 2000) * 100).toFixed(1)}%</span>
+                        <span>Números vendidos: {Math.max(400, soldCount)} / 2000</span>
+                        <span>{((Math.max(400, soldCount) / 2000) * 100).toFixed(1)}%</span>
                       </div>
                     </div>
                   </div>
@@ -875,10 +875,6 @@ function LandingPage() {
             <a href="https://wa.me/553291096358" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-green-600 font-bold hover:underline">
               <MessageCircle size={24} />
               32 9109-6358 (João)
-            </a>
-            <a href="https://wa.me/553299913864" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-green-600 font-bold hover:underline">
-              <MessageCircle size={24} />
-              32 9991-3864 (Saulo)
             </a>
           </div>
 

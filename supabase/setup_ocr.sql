@@ -8,7 +8,23 @@ CREATE EXTENSION IF NOT EXISTS "pg_net";
 -- 2. Criar a função que chama a Edge Function
 CREATE OR REPLACE FUNCTION public.fn_validate_pix_ocr()
 RETURNS TRIGGER AS $$
+DECLARE
+  auth_header text;
+  -- Fallback para garantir que a Edge Function seja chamada com sucesso mesmo sem contexto de sessão
+  api_key text := 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhic2VjaWRsZ3FjeWVmdGpuZ3JhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3NTc5NTIsImV4cCI6MjA4ODMzMzk1Mn0.ufCy6smp9Ip_J884HNhQ9hWjue29KMC_rSE_FsMWytw';
 BEGIN
+  -- Tenta obter o header de autorização da sessão, se disponível
+  BEGIN
+    auth_header := current_setting('request.headers')::jsonb->>'authorization';
+  EXCEPTION WHEN OTHERS THEN
+    auth_header := NULL;
+  END;
+
+  -- Se não encontrar o header na sessão, usa a chave anon como fallback
+  IF auth_header IS NULL OR auth_header = '' THEN
+    auth_header := 'Bearer ' || api_key;
+  END IF;
+
   -- Só dispara se o status for 'aguardando_verificacao' e tiver uma URL de comprovante
   IF (NEW.status = 'aguardando_verificacao' AND NEW.comprovante_url IS NOT NULL) THEN
     PERFORM
@@ -16,7 +32,7 @@ BEGIN
         url := 'https://hbsecidlgqcyeftjngra.supabase.co/functions/v1/validate-pix',
         headers := jsonb_build_object(
           'Content-Type', 'application/json',
-          'Authorization', 'Bearer ' || current_setting('request.headers')::jsonb->>'authorization'
+          'Authorization', auth_header
         ),
         body := jsonb_build_object('record', row_to_json(NEW))
       );

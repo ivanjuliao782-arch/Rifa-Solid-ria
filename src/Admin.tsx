@@ -43,15 +43,21 @@ export default function Admin() {
   const fetchData = async (silent = false) => {
     if (!silent) setLoading(true);
     
-    // O Supabase tem um limite padrão de 1000 registros por query.
-    // Vamos buscar em duas páginas para pegar todos os 2000 números.
-    const [res1, res2] = await Promise.all([
+    // Forçando 3 baterias para garantir que puxa TUDO do banco sem faltar nenhum número
+    const [res1, res2, res3] = await Promise.all([
       supabase.from('rifa_numeros').select('*').order('numero', { ascending: true }).range(0, 999),
-      supabase.from('rifa_numeros').select('*').order('numero', { ascending: true }).range(1000, 1999)
+      supabase.from('rifa_numeros').select('*').order('numero', { ascending: true }).range(1000, 1999),
+      supabase.from('rifa_numeros').select('*').order('numero', { ascending: true }).range(2000, 2999)
     ]);
 
-    if (!res1.error && !res2.error) {
-      setData([...(res1.data || []), ...(res2.data || [])]);
+    const allFetched = [
+      ...(res1.data || []),
+      ...(res2.data || []),
+      ...(res3.data || [])
+    ];
+
+    if (allFetched.length > 0) {
+      setData(allFetched);
     }
     
     if (!silent) setLoading(false);
@@ -123,18 +129,7 @@ export default function Admin() {
     d.numero.toString().includes(search) || 
     (d.nome?.toLowerCase() || '').includes(search.toLowerCase()) ||
     (d.telefone || '').includes(search)
-  ).sort((a, b) => {
-    // Prioriza quem não está 'livre'
-    if (a.status !== 'livre' && b.status === 'livre') return -1;
-    if (a.status === 'livre' && b.status !== 'livre') return 1;
-    
-    // Entre os ocupados/reservados, mostra o MAIS RECENTE primeiro
-    if (a.status !== 'livre' && b.status !== 'livre') {
-      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-    }
-    
-    return a.numero - b.numero;
-  });
+  ).sort((a, b) => a.numero - b.numero);
 
   if (!session) return null;
 
