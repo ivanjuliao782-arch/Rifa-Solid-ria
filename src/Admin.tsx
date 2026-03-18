@@ -129,7 +129,19 @@ export default function Admin() {
     d.numero.toString().includes(search) || 
     (d.nome?.toLowerCase() || '').includes(search.toLowerCase()) ||
     (d.telefone || '').includes(search)
-  ).sort((a, b) => a.numero - b.numero);
+  ).sort((a, b) => {
+    // Se um é livre e o outro não, empurra o livre para o final
+    if (a.status === 'livre' && b.status !== 'livre') return 1;
+    if (b.status === 'livre' && a.status !== 'livre') return -1;
+    
+    // Se ambos não são livres, ordena por quem reservou/comprou mais recentemente
+    if (a.status !== 'livre' && b.status !== 'livre') {
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    }
+    
+    // Se ambos são livres, ordena por número normalmente
+    return a.numero - b.numero;
+  });
 
   if (!session) return null;
 
